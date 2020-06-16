@@ -20,7 +20,7 @@ public class TouchHandler : MonoBehaviour
 
     public bool ReadyToAddForce;
 
-    public float NavCircleSizeLimiter, SpeedForNavigation, Thrust;
+    public float NavCircleSizeLimiter, ThrustMultiplier, Thrust,ThrustLimit;
     public bool CanTouch, BallTouched, HasReleasedShot;
 
     public GameObject Ball, NavCircle;
@@ -52,7 +52,7 @@ public class TouchHandler : MonoBehaviour
             RigidBodyBall.AddForce(Direction * Thrust);
             ReadyToAddForce = false;
             Direction = Vector3.zero;
-            Debug.Log("And the ball was moved");
+//            Debug.Log("And the ball was moved");
             
         }
     }
@@ -121,7 +121,7 @@ public class TouchHandler : MonoBehaviour
        
         NavCircle.transform.rotation = rotation;
         Ball.gameObject.transform.rotation = rotation;
-        Direction = Direction.normalized;
+            
     }
 
 
@@ -135,27 +135,41 @@ public class TouchHandler : MonoBehaviour
         NavCircle.transform.localScale = Vector3.zero;
 
 
-        float absY = Mathf.Abs(Direction.y), absX = Mathf.Abs(Direction.x);
-        Debug.Log(absX + " is Xvalue & " + absY + "is Yvalue");
-        if (absY > MinDirection || absX > MinDirection)
+        float absY = Mathf.Abs(Direction.y), absX = Mathf.Abs(Direction.x),absZ=Mathf.Abs(Direction.z);
+//        Debug.Log(absX + " is Xvalue & " + absY + "is Yvalue");
+//        if (absY > MinDirection || absX > MinDirection)
+//        {
+//            CanTouch = false;
+//
+//            if (absX > MaxDirection)
+//            {
+//                Direction.x = Direction.x > 0 ? MaxDirection : -MaxDirection;
+//            }
+//
+//            if (absY > MaxDirection)
+//            {
+//                Direction.y = Direction.y > 0 ? MaxDirection : -MaxDirection;
+//            }
+//            if (absZ > MaxDirection)
+//            {
+//                Direction.z = Direction.z > 0 ? MaxDirection : -MaxDirection;
+//            }
+//    }
+
+        
+        
+        Debug.Log("Direction x is" + Mathf.Abs(Direction.x) + "and Direction y is" + Mathf.Abs(Direction.y) + "for Thrust"+ " magnitude of direction is " +Direction.magnitude);
+        Thrust = ThrustMultiplier/Direction.magnitude;
+        if (Thrust>ThrustLimit)
         {
-            CanTouch = false;
-
-            if (absX > MaxDirection)
-            {
-                Direction.x = Direction.x > 0 ? MaxDirection : -MaxDirection;
-            }
-
-            if (absY > MaxDirection)
-            {
-                Direction.y = Direction.y > 0 ? MaxDirection : -MaxDirection;
-            }
-
-
-            ReadyToAddForce = true;
+            Thrust = ThrustLimit;
         }
 
-        Debug.Log("Direction x is" + Mathf.Abs(Direction.x) + "and Direction y is" + Mathf.Abs(Direction.y));
+        Direction=Direction.normalized;
+        Debug.Log("Thrust is " +Thrust);
+        ReadyToAddForce = true;
+
+       
     }
 
 
@@ -182,7 +196,7 @@ public class TouchHandler : MonoBehaviour
         RigidBodyBall.drag = .5f;
         RigidBodyBall.angularDrag = .5f;
 //                Ball.transform.GetChild(0).gameObject.SetActive(false);
-        Debug.Log("Ball is Touched");
+//        Debug.Log("Ball is Touched");
 //            }
 //        }
     }
@@ -201,6 +215,6 @@ public class TouchHandler : MonoBehaviour
             GameManager.GetInstance().EndedText.text = "NO " + _startPos + "" + _endPos;
         }
 
-        Debug.Log("Move RigidBody");
+//        Debug.Log("Move RigidBody");
     }
 }
