@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TurnHandler : MonoBehaviour
 {
-    public PlayerScript PlayerTop, PlayerBottom,PlayerInTurn,PlayerNotInTurn;
+    public PlayerScript PlayerTop, PlayerBottom,PlayerInTurn,PlayerNotInTurn,GoaledPlayer;
     private Animator _ballAnimator;
     public bool CanChangeTurn = true;
     
@@ -18,8 +18,8 @@ public class TurnHandler : MonoBehaviour
 
     private void Start()
     {
-        PlayerTop = GameManager.GetInstance().Player1;
-        PlayerBottom = GameManager.GetInstance().Player2;
+        PlayerTop = GameManager.GetInstance().Player2;
+        PlayerBottom = GameManager.GetInstance().Player1;
         
         _ballAnimator = TouchHandler.GetInstance().Ball.GetComponent<Animator>();
         PlayerInTurn = Random.Range(0, 2) == 0 ? PlayerTop:PlayerBottom;

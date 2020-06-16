@@ -83,7 +83,14 @@ public class BallScript : MonoBehaviour
             }
 
             TouchHandler.GetInstance().HasReleasedShot = false;
-            TurnHandler.GetInstance().PlayerInTurn.CountOfGoal(other.gameObject);
+            TurnHandler.GetInstance().PlayerInTurn
+                .CountOfGoal(other.gameObject);
+            TurnHandler.GetInstance().PlayerNotInTurn
+                .CountOfGoal(other.gameObject);
+
+            
+            //for goaled or ownGoaled
+            UIHandler.GetInstance().Goaled(TurnHandler.GetInstance().GoaledPlayer == TurnHandler.GetInstance().PlayerInTurn);
 
             GoalCounted = true;
             TurnHandler.GetInstance().CanChangeTurn = true;

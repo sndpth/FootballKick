@@ -65,49 +65,33 @@ public class PlayerScript : MonoBehaviour
 
     public void CountOfGoal(GameObject post)
     {
-       
+        
+        
 
-
-        if (post==MyPost)
+        // ReSharper disable once SuspiciousTypeConversion.Global
+        if (MyPost.transform != null && post!=MyPost.transform.GetChild(1).gameObject)
         {
+            Debug.Log("Not my Post i am player "+ PlayerName);
             MyPost.gameObject.transform.GetChild(0)
-                .GetComponent<BoxCollider2D>() //ball lai bahira jana nadina post ko barrier on gareko
-                .enabled = true;
-            
+                .GetComponent<BoxCollider2D>().enabled = true; //ball lai bahira jana nadina post ko barrier on gareko
+
+            TurnHandler.GetInstance().GoaledPlayer= gameObject.GetComponent<PlayerScript>();
+           
             IncreaseScore();
+
+            
         }
         else
         {
-            TurnHandler.GetInstance().PlayerNotInTurn.MyPost.gameObject.transform.GetChild(0).GetComponent<BoxCollider2D>() //ball lai bahira jana nadina post ko barrier on gareko
-                .enabled = true;
-            TurnHandler.GetInstance().PlayerNotInTurn.IncreaseScore();
+            Debug.Log("My Post i am player "+ PlayerName);
+
         }
-        Scored(post);
-    }
-
-
-    public void Scored(GameObject goaledPost)
-    {
-        Debug.Log("Goals");
-
-
-        bool owngoal = goaledPost == MyPost;
-        UIHandler.GetInstance().Goaled(true);
-
-
-//        if (goaledPost != MyPost) //if not own goal increase the score
-//        {
-//            IncreaseScore();
-//        }
-
-       
-
-
-        Debug.Log("own goal or not " + owngoal);
-
-
         
+
     }
+
+
+ 
 
     public void IncreaseScore()
     {
