@@ -52,6 +52,8 @@ public class BallScript : MonoBehaviour
             if (TouchHandler.GetInstance().HasReleasedShot)
             {
                 TurnHandler.GetInstance().CanChangeTurn = true;
+                TouchHandler.GetInstance().IsInTouch = false;
+
                 TurnHandler.GetInstance().ChangeTurn();
             }
         }

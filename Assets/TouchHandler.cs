@@ -10,7 +10,7 @@ using Vector3 = UnityEngine.Vector3;
 public class TouchHandler : MonoBehaviour
 {
     public Vector3 Direction;
-    public bool MaxForceApplied;
+    public bool MaxForceApplied,IsInTouch;
 
     private Vector3 _startPos,
         _endPos,
@@ -48,7 +48,6 @@ public class TouchHandler : MonoBehaviour
         if (ReadyToAddForce)
         {
             HasReleasedShot = true;
-
             RigidBodyBall.AddForce(Direction * Thrust);
             ReadyToAddForce = false;
             Direction = Vector3.zero;
@@ -165,7 +164,8 @@ public class TouchHandler : MonoBehaviour
             Thrust = ThrustLimit;
         }
 
-        Direction=Direction.normalized;
+        Direction = Direction.normalized;
+        Debug.Log("Magnitude after normalization is " + Direction.magnitude);
         Debug.Log("Thrust is " +Thrust);
         ReadyToAddForce = true;
 
@@ -175,6 +175,7 @@ public class TouchHandler : MonoBehaviour
 
     public void IsTouched()
     {
+        if(IsInTouch)return;
         MaxForceApplied = false;
 
 
@@ -187,18 +188,19 @@ public class TouchHandler : MonoBehaviour
             hitMe = Physics2D.Raycast(_touchPosWorld,
                 Vector2.zero); // hit raycast directly on the point where user touches.
 
-//        if (hitMe.collider != null) //if collider hits sometihing
-//        {
-//            if (hitMe.collider.CompareTag("ball"))
-//            {
+        if (hitMe.collider != null) //if collider hits sometihing
+        {
+            if (hitMe.collider.CompareTag("ball"))
+            {
+        IsInTouch = true;
         BallTouched = true;
         _startPos = Ball.transform.position;
         RigidBodyBall.drag = .5f;
         RigidBodyBall.angularDrag = .5f;
-//                Ball.transform.GetChild(0).gameObject.SetActive(false);
-//        Debug.Log("Ball is Touched");
-//            }
-//        }
+                Ball.transform.GetChild(0).gameObject.SetActive(false);
+        Debug.Log("Ball is Touched");
+            }
+        }
     }
 
     public void GoTowards(Vector2 direction, float force)

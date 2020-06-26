@@ -50,16 +50,29 @@ public class PlayerScript : MonoBehaviour
         }
 
 
-        FormationNumber = PlayerPrefs.GetInt("FormationNumber", 0);
-        SetFormation();
+        FormationSetter(PlayerPrefs.GetInt("FormationNumber", 0));
     }
 
-    void SetFormation()
+    public void FormationSetter(int formationNumber)
     {
-        for (int i = 0; i < 5; i++)
-        {
-            PoleList[i].transform.position = _formations[FormationNumber][i].position;
-        }
+        FormationNumber = formationNumber;
+        StartCoroutine(SetFormation());
+
+    }
+    
+   private IEnumerator SetFormation()
+   {
+       float totalTime = 1f, elapsedTime = 0f;
+       while (totalTime>elapsedTime)
+       {
+           for (int i = 0; i < 5; i++)
+           {
+               PoleList[i].transform.position = Vector3.Lerp(PoleList[i].transform.position,_formations[FormationNumber][i].position,elapsedTime/totalTime);
+               elapsedTime += Time.deltaTime;
+               yield return null;
+           }
+       }
+        
     }
 
 
@@ -104,6 +117,8 @@ public class PlayerScript : MonoBehaviour
             StartCoroutine(UIHandler.GetInstance().GameOver(true));
         }
         StartCoroutine(GameManager.GetInstance().AfterGoal());
+        TouchHandler.GetInstance().IsInTouch = false;
+
 
     }
 }

@@ -7,8 +7,8 @@ public class UIHandler : MonoBehaviour
 {
     public static UIHandler Instance { get; set; }
     public GameObject GoalPanel;
-    private Animator _goalPanelAnimation,_gameOverPanelAnimator;
-    public GameObject GameOverPanel;
+    private Animator _goalPanelAnimation,_gameOverPanelAnimator,_formationPanelAnimator;
+    public GameObject GameOverPanel,FormationOPanel;
     public static UIHandler GetInstance()
     {
         return Instance == null ? FindObjectOfType<UIHandler>() : Instance;
@@ -18,6 +18,7 @@ public class UIHandler : MonoBehaviour
     {
         _goalPanelAnimation = GoalPanel.GetComponent<Animator>();
         _gameOverPanelAnimator = GameOverPanel.GetComponent<Animator>();
+        _formationPanelAnimator= FormationOPanel.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -43,5 +44,16 @@ public class UIHandler : MonoBehaviour
         Debug.Log("gameOver");
     }
 
+    public void ChangeFormationOfCurrentPlayer(int FormationNumber)
+    {
+        TurnHandler.GetInstance().PlayerInTurn.FormationSetter(FormationNumber);
+    }
+
+
+    public void OpenFormationSetterPanel(bool open)
+    {
+        _formationPanelAnimator.Play(open==true? "PanelOpenClose":"PanelOpenClose 0");
+
+    }
     
 }
