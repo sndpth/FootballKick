@@ -27,6 +27,7 @@ public class BallScript : MonoBehaviour
     {
         BallRigidbody = GetComponent<Rigidbody2D>();
         GetComponent<CircleCollider2D>().tag = "ball";
+        GetComponent<CircleCollider2D>().isTrigger = true;
     }
 
     // Update is called once per frame

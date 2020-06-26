@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -56,13 +57,16 @@ public class PlayerScript : MonoBehaviour
     public void FormationSetter(int formationNumber)
     {
         FormationNumber = formationNumber;
-        StartCoroutine(SetFormation());
+        StartCoroutine(SetFormation(callback =>
+            {
+                TouchHandler.GetInstance().Ball.GetComponent<CircleCollider2D>().isTrigger = false;
+            }));
 
     }
     
-   private IEnumerator SetFormation()
+   private IEnumerator SetFormation(Action<bool> callback)
    {
-       float totalTime = 1f, elapsedTime = 0f;
+       float totalTime = .5f, elapsedTime = 0f;
        while (totalTime>elapsedTime)
        {
            for (int i = 0; i < 5; i++)
@@ -72,8 +76,13 @@ public class PlayerScript : MonoBehaviour
                yield return null;
            }
        }
-        
-    }
+
+       callback(true);
+
+
+
+
+   }
 
 
     public void CountOfGoal(GameObject post)

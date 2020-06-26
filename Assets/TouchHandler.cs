@@ -177,7 +177,7 @@ public class TouchHandler : MonoBehaviour
     {
         if(IsInTouch)return;
         MaxForceApplied = false;
-
+        Ball.GetComponent<CircleCollider2D>().isTrigger = false;
 
         NavCircle.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
         Ball.gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));

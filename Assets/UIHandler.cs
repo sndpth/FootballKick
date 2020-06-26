@@ -52,6 +52,7 @@ public class UIHandler : MonoBehaviour
 
     public void OpenFormationSetterPanel(bool open)
     {
+        TouchHandler.GetInstance().Ball.GetComponent<CircleCollider2D>().isTrigger = true;
         _formationPanelAnimator.Play(open==true? "PanelOpenClose":"PanelOpenClose 0");
 
     }
